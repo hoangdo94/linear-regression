@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content="utf-8" http-equiv="encoding">
+    <title>Linear Regression</title>
+    <link rel="stylesheet" href="bootstrap.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="jumbotron" style="margin-top:50px">
+            <h1 style="text-align:center">Linear Regression</h1>
+            <div class="form-group">
+                <label for="dataset" style>Dataset:</label>
+                <textarea class="form-control" rows="8" id="dataset"></textarea>
+            </div>
+            <button class="btn btn-primary btn-lg" id="btnCalculate">Calculate!</button>
+            <div id="result">
+                <h3></h3>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script type="text/javascript" src="regression.js"></script>
+    <script type="text/javascript">
+    function sign(x) {
+        if (x < 0) return ' - ';
+        return ' + ';
+    }
+    $('#btnCalculate').click(function() {
+        var data = []
+        var tmp = $('#dataset').val().trim().split(/\r\n?|\n/);
+        if (tmp[0] === '') return;
+        for (var i = 0; i < tmp.length; i++) {
+            data.push(tmp[i].split(/\s+/));
+        }
+        var r = linearRegression(data);
+        if (r) {
+            if (r.length === 2) {
+            	var rHtml = 'Result: y = ' + r[0] + sign(r[1]) + Math.abs(r[1]) + 'x';
+            } else {
+                var rHtml = 'Result: y = ' + r[0];
+                for (var i = 1; i < r.length; i++) {
+                    rHtml += (sign(r[i]) + Math.abs(r[i]) + 'x<sub>' + i + '</sub>');
+                }
+            }
+            $('#result h3').html(rHtml);
+        } else {
+            alert('Cannot calculate! Please verify your dataset...')
+        }
+
+    })
+    </script>
+</body>
+
+</html>
