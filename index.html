@@ -29,12 +29,19 @@
         if (x < 0) return ' - ';
         return ' + ';
     }
+    function val(x) {
+        var v = Math.abs(x);
+        if (v === 1) return '';
+        return v;
+    }
     $('#btnCalculate').click(function() {
         var data = []
         var tmp = $('#dataset').val().trim().split(/\r\n?|\n/);
         if (tmp[0] === '') return;
         for (var i = 0; i < tmp.length; i++) {
-            data.push(tmp[i].split(/\s+/));
+            data.push(tmp[i].split(/\s+/).map(function(v) {
+                return parseFloat(v.trim());
+            }));
         }
         var r = linearRegression(data);
         if (r) {
@@ -43,7 +50,7 @@
             } else {
                 var rHtml = 'Result: y = ' + r[0];
                 for (var i = 1; i < r.length; i++) {
-                    rHtml += (sign(r[i]) + Math.abs(r[i]) + 'x<sub>' + i + '</sub>');
+                    rHtml += (sign(r[i]) + val(r[i]) + 'x<sub>' + i + '</sub>');
                 }
             }
             $('#result h3').html(rHtml);
