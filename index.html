@@ -39,7 +39,7 @@
         var tmp = $('#dataset').val().trim().split(/\r\n?|\n/);
         if (tmp[0] === '') return;
         for (var i = 0; i < tmp.length; i++) {
-            data.push(tmp[i].split(/\s+/).map(function(v) {
+            data.push(tmp[i].trim().split(/\s+/).map(function(v) {
                 return parseFloat(v.trim());
             }));
         }
